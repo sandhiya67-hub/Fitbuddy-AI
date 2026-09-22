@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>FitBuddy AI</title>
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f8f4;
+            color: #18352a;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 50px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #0d5c3b;
+        }
+
+        p {
+            text-align: center;
+            color: #66756d;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 25px;
+            border: none;
+            border-radius: 7px;
+            background: #0d5c3b;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #08452d;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>💪 FitBuddy AI</h1>
+
+        <p>
+            Personalized AI Fitness Plan Generator
+        </p>
+
+        <form action="/generate-workout" method="post">
+
+            <label>Full Name</label>
+
+            <input
+                type="text"
+                name="username"
+                placeholder="Enter your name"
+                required
+            >
+
+            <label>User ID</label>
+
+            <input
+                type="text"
+                name="user_id"
+                placeholder="Enter user ID"
+                required
+            >
+
+            <label>Age</label>
+
+            <input
+                type="number"
+                name="age"
+                min="13"
+                max="100"
+                required
+            >
+
+            <label>Weight (kg)</label>
+
+            <input
+                type="number"
+                name="weight"
+                step="0.1"
+                required
+            >
+
+            <label>Fitness Goal</label>
+
+            <select name="goal" required>
+
+                <option value="">
+                    Select Goal
+                </option>
+
+                <option value="Weight Loss">
+                    Weight Loss
+                </option>
+
+                <option value="Muscle Gain">
+                    Muscle Gain
+                </option>
+
+                <option value="General Wellness">
+                    General Wellness
+                </option>
+
+                <option value="Flexibility">
+                    Flexibility
+                </option>
+
+            </select>
+
+            <label>Workout Intensity</label>
+
+            <select name="intensity" required>
+
+                <option value="">
+                    Select Intensity
+                </option>
+
+                <option value="Low">
+                    Low
+                </option>
+
+                <option value="Medium">
+                    Medium
+                </option>
+
+                <option value="High">
+                    High
+                </option>
+
+            </select>
+
+            <button type="submit">
+                Generate Fitness Plan
+            </button>
+
+        </form>
+
+    </div>
+
+</body>
+
+</html>
