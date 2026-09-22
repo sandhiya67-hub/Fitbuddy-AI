@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitBuddy AI</title>
+    <style>
+        :root { --green: #0d5c3b; --dark: #18352a; --muted: #66756d; --light: #f1f8f4; }
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: Arial, sans-serif; background: var(--light); color: var(--dark); }
+        .container { max-width: 760px; margin: 32px auto; padding: 28px; background: #fff; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,.1); }
+        h1 { margin-top: 0; text-align: center; color: var(--green); }
+        .intro { text-align: center; color: var(--muted); }
+        label { display: block; margin: 15px 0 5px; font-weight: bold; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 7px; font: inherit; }
+        button { width: 100%; padding: 14px; margin-top: 25px; border: 0; border-radius: 7px; background: var(--green); color: #fff; font-size: 16px; cursor: pointer; }
+        button:hover { background: #08452d; }
+        .result { margin-top: 28px; padding-top: 20px; border-top: 1px solid #d8e3dd; }
+        pre { white-space: pre-wrap; line-height: 1.5; font: inherit; }
+        .hidden { display: none; }
+        .notice { padding: 10px 12px; background: #fff8df; border-left: 4px solid #d2a900; color: #5f4d00; }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <h1>FitBuddy AI</h1>
+        <p class="intro">Personalized 7-day fitness plan generator</p>
+        <p class="notice">This free version runs in the browser and uses a demo plan. It does not collect or store your information.</p>
+
+        <form id="plan-form">
+            <label for="username">Full Name</label>
+            <input id="username" name="username" placeholder="Enter your name" required>
+
+            <label for="user-id">User ID</label>
+            <input id="user-id" name="userId" placeholder="Enter user ID" required>
+
+            <label for="age">Age</label>
+            <input id="age" name="age" type="number" min="13" max="100" required>
+
+            <label for="weight">Weight (kg)</label>
+            <input id="weight" name="weight" type="number" min="1" step="0.1" required>
+
+            <label for="goal">Fitness Goal</label>
+            <select id="goal" name="goal" required>
+                <option value="">Select Goal</option>
+                <option>Weight Loss</option>
+                <option>Muscle Gain</option>
+                <option>General Wellness</option>
+                <option>Flexibility</option>
+            </select>
+
+            <label for="intensity">Workout Intensity</label>
+            <select id="intensity" name="intensity" required>
+                <option value="">Select Intensity</option>
+                <option>Low</option>
+                <option>Medium</option>
+                <option>High</option>
+            </select>
+
+            <button type="submit">Generate Fitness Plan</button>
+        </form>
+
+        <section id="result" class="result hidden" aria-live="polite">
+            <h2 id="result-title"></h2>
+            <pre id="plan"></pre>
+            <h2>Give More Feedback</h2>
+            <form id="feedback-form">
+                <label for="feedback">What would you like to change?</label>
+                <textarea id="feedback" rows="5" required></textarea>
+                <button type="submit">Update My Plan</button>
+            </form>
+        </section>
+    </main>
+
+    <script>
+        const form = document.getElementById("plan-form");
+        const feedbackForm = document.getElementById("feedback-form");
+        const result = document.getElementById("result");
+        const resultTitle = document.getElementById("result-title");
+        const planOutput = document.getElementById("plan");
+        let currentDetails = {};
+
+        function makePlan(details, feedback = "") {
+            const change = feedback ? `\nChanges requested: ${feedback}\n` : "";
+            return `FITBUDDY 7-DAY FITNESS PLAN\n\nUser: ${details.username}\nAge: ${details.age}\nWeight: ${details.weight} kg\nGoal: ${details.goal}\nIntensity: ${details.intensity}\n${change}\nDAY 1 - FULL BODY STRENGTH\nWarm-up: 5 minutes walking, arm circles, bodyweight squats\nWorkout: Squats 3 x 12, push-ups 3 x 8, lunges 3 x 10 each leg, plank 3 x 30 seconds\nRest: 60 seconds between sets\nCool-down: 5 minutes of stretching\n\nDAY 2 - CARDIO\nWarm-up: 5 minutes light walking\nWorkout: Brisk walking 20 minutes, jumping jacks 3 x 20, high knees 3 x 20 seconds\nRest: 45-60 seconds\nCool-down: Walking and stretching\n\nDAY 3 - UPPER BODY\nWarm-up: Arm rotations and shoulder mobility\nWorkout: Push-ups 3 x 10, chair dips 3 x 10, shoulder taps 3 x 12, plank 3 x 30 seconds\nCool-down: Shoulder and arm stretches\n\nDAY 4 - RECOVERY DAY\n20-30 minute easy walk, light stretching, hydration, and adequate sleep.\n\nDAY 5 - LOWER BODY\nWarm-up: 5 minutes walking and dynamic leg stretches\nWorkout: Squats 3 x 15, lunges 3 x 10 each leg, glute bridges 3 x 15, calf raises 3 x 15\nCool-down: Lower-body stretching\n\nDAY 6 - FULL BODY CIRCUIT\nComplete 3 rounds: 15 squats, 10 push-ups, 10 lunges each leg, 20 jumping jacks, 30-second plank\nRest: 1-2 minutes between rounds\n\nDAY 7 - ACTIVE RECOVERY\n20 minutes walking, full-body stretching, breathing exercises, hydration, and rest.\n\nNUTRITION TIPS\n- Eat balanced meals with protein, vegetables, and fruit.\n- Drink enough water.\n- Adjust portions to your needs and activity level.\n\nSAFETY\nStop if you feel pain or unwell and consult a qualified professional for personal medical advice.`;
+        }
+
+        function showPlan(title, text) {
+            resultTitle.textContent = title;
+            planOutput.textContent = text;
+            result.classList.remove("hidden");
+            result.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            currentDetails = Object.fromEntries(new FormData(form));
+            showPlan(`Hello, ${currentDetails.username}!`, makePlan(currentDetails));
+        });
+
+        feedbackForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const feedback = document.getElementById("feedback").value.trim();
+            showPlan(`Updated plan for ${currentDetails.username}`, makePlan(currentDetails, feedback));
+        });
+    </script>
+</body>
+</html>
