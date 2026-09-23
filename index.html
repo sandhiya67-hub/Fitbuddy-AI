@@ -3,106 +3,385 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>FitBuddy AI</title>
+
     <style>
-        :root { --green: #0d5c3b; --dark: #18352a; --muted: #66756d; --light: #f1f8f4; }
-        * { box-sizing: border-box; }
-        body { margin: 0; font-family: Arial, sans-serif; background: var(--light); color: var(--dark); }
-        .container { max-width: 760px; margin: 32px auto; padding: 28px; background: #fff; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,.1); }
-        h1 { margin-top: 0; text-align: center; color: var(--green); }
-        .intro { text-align: center; color: var(--muted); }
-        label { display: block; margin: 15px 0 5px; font-weight: bold; }
-        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 7px; font: inherit; }
-        button { width: 100%; padding: 14px; margin-top: 25px; border: 0; border-radius: 7px; background: var(--green); color: #fff; font-size: 16px; cursor: pointer; }
-        button:hover { background: #08452d; }
-        .result { margin-top: 28px; padding-top: 20px; border-top: 1px solid #d8e3dd; }
-        pre { white-space: pre-wrap; line-height: 1.5; font: inherit; }
-        .hidden { display: none; }
-        .notice { padding: 10px 12px; background: #fff8df; border-left: 4px solid #d2a900; color: #5f4d00; }
+        :root {
+            --dark: #10201c;
+            --dark-soft: #19342d;
+            --lime: #c9f36b;
+            --cream: #f4f5ef;
+            --muted: #aab8b1;
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: var(--cream);
+            color: var(--dark);
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 7%;
+            background: var(--dark);
+            color: var(--white);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: var(--lime);
+        }
+
+        nav a {
+            margin-left: 24px;
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .hero {
+            min-height: 470px;
+            padding: 90px 7%;
+            color: white;
+            background:
+                linear-gradient(90deg, rgba(16, 32, 28, .96), rgba(16, 32, 28, .48)),
+                url("https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1800&q=85")
+                center/cover;
+        }
+
+        .hero-content {
+            max-width: 650px;
+        }
+
+        .eyebrow {
+            color: var(--lime);
+            font-weight: bold;
+            letter-spacing: 2px;
+            font-size: 13px;
+        }
+
+        h1 {
+            margin: 15px 0;
+            font-size: clamp(42px, 7vw, 82px);
+            line-height: .95;
+        }
+
+        .hero p {
+            max-width: 520px;
+            color: #d5ded9;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .hero-button {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 15px 24px;
+            border-radius: 30px;
+            background: var(--lime);
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .planner {
+            width: min(760px, 90%);
+            margin: -70px auto 70px;
+            padding: 40px;
+            border-radius: 24px;
+            background: var(--white);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .14);
+        }
+
+        .planner h2 {
+            margin-top: 0;
+            font-size: 30px;
+        }
+
+        .planner-intro {
+            color: #65736d;
+            line-height: 1.6;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #d5ddd8;
+            border-radius: 10px;
+            background: #fbfcfa;
+            color: var(--dark);
+            font-size: 15px;
+        }
+
+        input:focus,
+        select:focus {
+            outline: 3px solid rgba(201, 243, 107, .45);
+            border-color: #9fca4f;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 24px;
+            padding: 16px;
+            border: none;
+            border-radius: 30px;
+            background: var(--dark);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: var(--dark-soft);
+        }
+
+        .privacy-note {
+            margin-top: 15px;
+            color: #7b8781;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            width: min(1000px, 90%);
+            margin: 0 auto 80px;
+        }
+
+        .feature {
+            padding: 25px;
+            border-radius: 18px;
+            background: white;
+        }
+
+        .feature-icon {
+            font-size: 30px;
+        }
+
+        .feature h3 {
+            margin-bottom: 8px;
+        }
+
+        .feature p {
+            color: #68756e;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 700px) {
+            header {
+                padding: 20px;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .hero {
+                padding: 70px 24px 130px;
+            }
+
+            .planner {
+                padding: 25px;
+            }
+
+            .form-grid,
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+        }
     </style>
 </head>
+
 <body>
-    <main class="container">
-        <h1>FitBuddy AI</h1>
-        <p class="intro">Personalized 7-day fitness plan generator</p>
-        <p class="notice">This free version runs in the browser and uses a demo plan. It does not collect or store your information.</p>
 
-        <form id="plan-form">
-            <label for="username">Full Name</label>
-            <input id="username" name="username" placeholder="Enter your name" required>
+    <header>
+        <div class="logo">FitBuddy<span>AI</span></div>
 
-            <label for="user-id">User ID</label>
-            <input id="user-id" name="userId" placeholder="Enter user ID" required>
+        <nav>
+            <a href="#planner">Create Plan</a>
+            <a href="#features">Features</a>
+        </nav>
+    </header>
 
-            <label for="age">Age</label>
-            <input id="age" name="age" type="number" min="13" max="100" required>
+    <section class="hero">
+        <div class="hero-content">
+            <div class="eyebrow">YOUR PERSONAL AI FITNESS COACH</div>
 
-            <label for="weight">Weight (kg)</label>
-            <input id="weight" name="weight" type="number" min="1" step="0.1" required>
+            <h1>Build a plan that fits your life.</h1>
 
-            <label for="goal">Fitness Goal</label>
-            <select id="goal" name="goal" required>
-                <option value="">Select Goal</option>
-                <option>Weight Loss</option>
-                <option>Muscle Gain</option>
-                <option>General Wellness</option>
-                <option>Flexibility</option>
-            </select>
+            <p>
+                Get a personalized workout plan designed around your body,
+                your goals, and your preferred workout intensity.
+            </p>
 
-            <label for="intensity">Workout Intensity</label>
-            <select id="intensity" name="intensity" required>
-                <option value="">Select Intensity</option>
-                <option>Low</option>
-                <option>Medium</option>
-                <option>High</option>
-            </select>
+            <a class="hero-button" href="#planner">
+                Create My Plan
+            </a>
+        </div>
+    </section>
 
-            <button type="submit">Generate Fitness Plan</button>
+    <section class="planner" id="planner">
+        <h2>Tell us about yourself</h2>
+
+        <p class="planner-intro">
+            Answer a few simple questions and FitBuddy AI will generate
+            a personalized fitness plan for you.
+        </p>
+
+        <form action="/generate-workout" method="post">
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label for="username">Full Name</label>
+                    <input
+                        id="username"
+                        type="text"
+                        name="username"
+                        placeholder="Enter your name"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="user-id">User ID</label>
+                    <input
+                        id="user-id"
+                        type="text"
+                        name="user_id"
+                        placeholder="Enter user ID"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="age">Age</label>
+                    <input
+                        id="age"
+                        type="number"
+                        name="age"
+                        min="13"
+                        max="100"
+                        placeholder="Your age"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="weight">Weight (kg)</label>
+                    <input
+                        id="weight"
+                        type="number"
+                        name="weight"
+                        step="0.1"
+                        placeholder="Your weight"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="goal">Fitness Goal</label>
+                    <select id="goal" name="goal" required>
+                        <option value="">Select your goal</option>
+                        <option value="Weight Loss">Weight Loss</option>
+                        <option value="Muscle Gain">Muscle Gain</option>
+                        <option value="General Wellness">General Wellness</option>
+                        <option value="Flexibility">Flexibility</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="intensity">Workout Intensity</label>
+                    <select id="intensity" name="intensity" required>
+                        <option value="">Select intensity</option>
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <button type="submit">
+                Generate My Fitness Plan →
+            </button>
+
+            <div class="privacy-note">
+                Your information is used only to create your plan.
+            </div>
         </form>
+    </section>
 
-        <section id="result" class="result hidden" aria-live="polite">
-            <h2 id="result-title"></h2>
-            <pre id="plan"></pre>
-            <h2>Give More Feedback</h2>
-            <form id="feedback-form">
-                <label for="feedback">What would you like to change?</label>
-                <textarea id="feedback" rows="5" required></textarea>
-                <button type="submit">Update My Plan</button>
-            </form>
-        </section>
-    </main>
+    <section class="features" id="features">
+        <div class="feature">
+            <div class="feature-icon">🏋️</div>
+            <h3>Personalized workouts</h3>
+            <p>
+                Receive workouts based on your goal, age, weight,
+                and preferred intensity.
+            </p>
+        </div>
 
-    <script>
-        const form = document.getElementById("plan-form");
-        const feedbackForm = document.getElementById("feedback-form");
-        const result = document.getElementById("result");
-        const resultTitle = document.getElementById("result-title");
-        const planOutput = document.getElementById("plan");
-        let currentDetails = {};
+        <div class="feature">
+            <div class="feature-icon">🥗</div>
+            <h3>Simple guidance</h3>
+            <p>
+                Get practical fitness direction that is easy to
+                understand and follow.
+            </p>
+        </div>
 
-        function makePlan(details, feedback = "") {
-            const change = feedback ? `\nChanges requested: ${feedback}\n` : "";
-            return `FITBUDDY 7-DAY FITNESS PLAN\n\nUser: ${details.username}\nAge: ${details.age}\nWeight: ${details.weight} kg\nGoal: ${details.goal}\nIntensity: ${details.intensity}\n${change}\nDAY 1 - FULL BODY STRENGTH\nWarm-up: 5 minutes walking, arm circles, bodyweight squats\nWorkout: Squats 3 x 12, push-ups 3 x 8, lunges 3 x 10 each leg, plank 3 x 30 seconds\nRest: 60 seconds between sets\nCool-down: 5 minutes of stretching\n\nDAY 2 - CARDIO\nWarm-up: 5 minutes light walking\nWorkout: Brisk walking 20 minutes, jumping jacks 3 x 20, high knees 3 x 20 seconds\nRest: 45-60 seconds\nCool-down: Walking and stretching\n\nDAY 3 - UPPER BODY\nWarm-up: Arm rotations and shoulder mobility\nWorkout: Push-ups 3 x 10, chair dips 3 x 10, shoulder taps 3 x 12, plank 3 x 30 seconds\nCool-down: Shoulder and arm stretches\n\nDAY 4 - RECOVERY DAY\n20-30 minute easy walk, light stretching, hydration, and adequate sleep.\n\nDAY 5 - LOWER BODY\nWarm-up: 5 minutes walking and dynamic leg stretches\nWorkout: Squats 3 x 15, lunges 3 x 10 each leg, glute bridges 3 x 15, calf raises 3 x 15\nCool-down: Lower-body stretching\n\nDAY 6 - FULL BODY CIRCUIT\nComplete 3 rounds: 15 squats, 10 push-ups, 10 lunges each leg, 20 jumping jacks, 30-second plank\nRest: 1-2 minutes between rounds\n\nDAY 7 - ACTIVE RECOVERY\n20 minutes walking, full-body stretching, breathing exercises, hydration, and rest.\n\nNUTRITION TIPS\n- Eat balanced meals with protein, vegetables, and fruit.\n- Drink enough water.\n- Adjust portions to your needs and activity level.\n\nSAFETY\nStop if you feel pain or unwell and consult a qualified professional for personal medical advice.`;
-        }
+        <div class="feature">
+            <div class="feature-icon">📈</div>
+            <h3>Progress focused</h3>
+            <p>
+                Build consistent habits with a plan created around
+                your personal fitness journey.
+            </p>
+        </div>
+    </section>
 
-        function showPlan(title, text) {
-            resultTitle.textContent = title;
-            planOutput.textContent = text;
-            result.classList.remove("hidden");
-            result.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-
-        form.addEventListener("submit", (event) => {
-            event.preventDefault();
-            currentDetails = Object.fromEntries(new FormData(form));
-            showPlan(`Hello, ${currentDetails.username}!`, makePlan(currentDetails));
-        });
-
-        feedbackForm.addEventListener("submit", (event) => {
-            event.preventDefault();
-            const feedback = document.getElementById("feedback").value.trim();
-            showPlan(`Updated plan for ${currentDetails.username}`, makePlan(currentDetails, feedback));
-        });
-    </script>
 </body>
 </html>
