@@ -1,186 +1,1582 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FitBuddy AI | Your Personal Fitness Companion</title>
 
-    <meta charset="UTF-8">
+<style>
+:root {
+  --green: #52785c;
+  --green-dark: #35583f;
+  --green-light: #e3eee2;
+  --cream: #fbf8ef;
+  --white: #ffffff;
+  --text: #26382c;
+  --muted: #829083;
+  --border: #e5eadd;
+  --peach: #f8e5d5;
+  --lavender: #eae5f5;
+  --shadow: 0 8px 28px rgba(53, 88, 63, 0.07);
+}
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-    <title>FitBuddy AI</title>
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #f1f5ed;
+  color: var(--text);
+}
 
-    <style>
+button, input, select, textarea {
+  font: inherit;
+}
 
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f1f8f4;
-            color: #18352a;
-        }
+button {
+  cursor: pointer;
+  border: none;
+}
 
-        .container {
-            max-width: 700px;
-            margin: 50px auto;
-            padding: 30px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
+.app {
+  display: flex;
+  min-height: 100vh;
+}
 
-        h1 {
-            text-align: center;
-            color: #0d5c3b;
-        }
+/* SIDEBAR */
 
-        p {
-            text-align: center;
-            color: #66756d;
-        }
+.sidebar {
+  width: 245px;
+  background: #fffdf7;
+  padding: 28px 18px;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
 
-        label {
-            display: block;
-            margin-top: 15px;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
+.logo {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--green-dark);
+  margin: 0 0 38px 10px;
+}
 
-        input,
-        select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 7px;
-            box-sizing: border-box;
-        }
+.logo span {
+  color: #a1bd83;
+}
 
-        button {
-            width: 100%;
-            padding: 14px;
-            margin-top: 25px;
-            border: none;
-            border-radius: 7px;
-            background: #0d5c3b;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-        }
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: var(--cream);
+  border-radius: 16px;
+  margin-bottom: 28px;
+}
 
-        button:hover {
-            background: #08452d;
-        }
+.avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #dce9d4;
+  display: grid;
+  place-items: center;
+  font-size: 23px;
+}
 
-    </style>
+.profile h4 {
+  font-size: 13px;
+}
 
+.profile p {
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+.nav-label {
+  font-size: 10px;
+  color: #a1aa9d;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  margin: 0 0 12px 12px;
+}
+
+.nav-btn {
+  width: 100%;
+  padding: 13px 14px;
+  border-radius: 12px;
+  background: transparent;
+  color: #718071;
+  text-align: left;
+  margin-bottom: 7px;
+  font-size: 14px;
+  transition: .2s;
+}
+
+.nav-btn:hover,
+.nav-btn.active {
+  background: var(--green-light);
+  color: var(--green-dark);
+  font-weight: 700;
+}
+
+.sidebar-bottom {
+  margin-top: auto;
+  padding: 16px 12px;
+  background: var(--green-light);
+  border-radius: 15px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.sidebar-bottom strong {
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* MAIN */
+
+.main {
+  flex: 1;
+  min-width: 0;
+  padding: 30px 36px;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 28px;
+}
+
+.topbar h2 {
+  font-size: 24px;
+}
+
+.topbar p {
+  color: var(--muted);
+  margin-top: 6px;
+  font-size: 13px;
+}
+
+.top-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.date-pill {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 11px 14px;
+  font-size: 12px;
+}
+
+.menu-toggle {
+  display: none;
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+/* COMMON */
+
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 22px;
+  box-shadow: var(--shadow);
+}
+
+.card h3 {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.subtext {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 28px 0 15px;
+}
+
+.section-heading h3 {
+  font-size: 18px;
+}
+
+.small-link {
+  color: var(--green);
+  background: none;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* HERO */
+
+.hero {
+  background: linear-gradient(120deg, #e1edda, #f8f4e7);
+  border-radius: 24px;
+  padding: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  overflow: hidden;
+}
+
+.hero .eyebrow {
+  color: var(--green);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  margin-bottom: 12px;
+}
+
+.hero h1 {
+  font-size: clamp(24px, 3vw, 34px);
+  line-height: 1.2;
+  margin-bottom: 12px;
+  max-width: 470px;
+}
+
+.hero p {
+  color: #6c7e6b;
+  font-size: 13px;
+  line-height: 1.7;
+  max-width: 440px;
+  margin-bottom: 20px;
+}
+
+.hero-art {
+  font-size: 92px;
+  flex-shrink: 0;
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.primary-btn {
+  background: var(--green);
+  color: white;
+  padding: 13px 20px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 13px;
+  transition: .2s;
+}
+
+.primary-btn:hover {
+  background: var(--green-dark);
+  transform: translateY(-1px);
+}
+
+.secondary-btn {
+  background: var(--green-light);
+  color: var(--green-dark);
+  padding: 11px 16px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+/* METRICS */
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.metric-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  font-size: 21px;
+  margin-bottom: 15px;
+}
+
+.metric-value {
+  font-size: 24px;
+  font-weight: 800;
+  margin: 5px 0;
+}
+
+.metric-label {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.progress-track {
+  height: 7px;
+  background: #edf0e9;
+  border-radius: 20px;
+  margin-top: 13px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #8eaf7c;
+  border-radius: 20px;
+  transition: width .4s;
+}
+
+/* GRID */
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 18px;
+}
+
+.workout-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.workout-item {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 12px;
+  background: #fbfcf8;
+  border-radius: 13px;
+}
+
+.workout-emoji {
+  width: 45px;
+  height: 45px;
+  background: var(--green-light);
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  font-size: 23px;
+}
+
+.workout-info {
+  flex: 1;
+}
+
+.workout-info h4 {
+  font-size: 13px;
+  margin-bottom: 5px;
+}
+
+.workout-info p {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.tag {
+  font-size: 10px;
+  background: var(--green-light);
+  color: var(--green-dark);
+  border-radius: 20px;
+  padding: 6px 9px;
+  white-space: nowrap;
+}
+
+.meal-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f1e9;
+}
+
+.meal-item:last-child {
+  border-bottom: none;
+}
+
+.meal-emoji {
+  font-size: 26px;
+  width: 42px;
+  height: 42px;
+  background: #faf4e7;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+}
+
+.meal-info {
+  flex: 1;
+}
+
+.meal-info h4 {
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.meal-info p {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.ai-tip {
+  margin-top: 18px;
+  background: #f0f5eb;
+  border-radius: 14px;
+  padding: 15px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: #526c4d;
+}
+
+/* WATER */
+
+.water-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 18px;
+}
+
+.water-circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 7px solid #e2eee9;
+  border-right-color: #83b9c2;
+  display: grid;
+  place-items: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.water-controls {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.water-controls button {
+  padding: 8px 12px;
+  background: #e9f3f4;
+  color: #487f87;
+  border-radius: 9px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* WORKOUT CALENDAR */
+
+.week-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 10px;
+  margin: 18px 0;
+}
+
+.day-card {
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: 15px;
+  padding: 14px 5px;
+  text-align: center;
+  transition: .2s;
+  color: var(--text);
+}
+
+.day-card:hover {
+  border-color: #91b18a;
+}
+
+.day-card.selected {
+  background: var(--green);
+  color: white;
+  border-color: var(--green);
+}
+
+.day-card .day-number {
+  font-size: 21px;
+  font-weight: 800;
+  margin: 8px 0;
+}
+
+.day-card .day-name {
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.day-card .day-icon {
+  font-size: 20px;
+}
+
+.day-card .day-status {
+  font-size: 9px;
+  margin-top: 8px;
+  opacity: .8;
+}
+
+.day-detail {
+  background: #f6f8f1;
+  border-radius: 15px;
+  padding: 20px;
+  margin-top: 12px;
+}
+
+.day-detail h3 {
+  margin-bottom: 8px;
+}
+
+/* FORMS */
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.form-group label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fffdf8;
+  outline: none;
+  color: var(--text);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #91b18a;
+}
+
+.form-group.full {
+  grid-column: 1 / -1;
+}
+
+/* CHAT */
+
+.chat-box {
+  display: flex;
+  flex-direction: column;
+  height: 440px;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 15px 0;
+}
+
+.message {
+  padding: 12px 15px;
+  border-radius: 14px;
+  margin-bottom: 12px;
+  max-width: 85%;
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.message.bot {
+  background: #edf4e8;
+  border-bottom-left-radius: 4px;
+}
+
+.message.user {
+  background: var(--green);
+  color: white;
+  margin-left: auto;
+  border-bottom-right-radius: 4px;
+}
+
+.chat-input {
+  display: flex;
+  gap: 10px;
+  border-top: 1px solid var(--border);
+  padding-top: 15px;
+}
+
+.chat-input input {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  outline: none;
+}
+
+/* TOAST */
+
+.toast {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background: var(--green-dark);
+  color: white;
+  padding: 14px 20px;
+  border-radius: 12px;
+  font-size: 13px;
+  opacity: 0;
+  transform: translateY(15px);
+  transition: .3s;
+  pointer-events: none;
+  z-index: 99;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1100px) {
+  .metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .main {
+    padding: 24px;
+  }
+
+  .sidebar {
+    width: 210px;
+  }
+}
+
+@media (max-width: 800px) {
+  .sidebar {
+    position: fixed;
+    left: -260px;
+    top: 0;
+    bottom: 0;
+    z-index: 20;
+    transition: .3s;
+    box-shadow: var(--shadow);
+  }
+
+  .sidebar.open {
+    left: 0;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .main {
+    padding: 18px;
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-art {
+    font-size: 60px;
+  }
+
+  .week-grid {
+    gap: 5px;
+  }
+
+  .day-card {
+    padding: 10px 2px;
+  }
+
+  .day-card .day-name {
+    font-size: 9px;
+  }
+
+  .day-card .day-number {
+    font-size: 17px;
+  }
+}
+
+@media (max-width: 480px) {
+  .metrics {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  .hero {
+    padding: 22px;
+  }
+
+  .hero-art {
+    display: none;
+  }
+
+  .topbar h2 {
+    font-size: 19px;
+  }
+
+  .date-pill {
+    display: none;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-group.full {
+    grid-column: auto;
+  }
+
+  .week-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .water-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+</style>
 </head>
 
 <body>
 
-    <div class="container">
+<div class="app">
 
-        <h1>💪 FitBuddy AI</h1>
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
 
-        <p>
-            Personalized AI Fitness Plan Generator
+    <div class="logo">🌿 FitBuddy<span> AI</span></div>
+
+    <div class="profile">
+      <div class="avatar">😊</div>
+      <div>
+        <h4 id="profileName">Fitness Friend</h4>
+        <p>Your wellness journey</p>
+      </div>
+    </div>
+
+    <p class="nav-label">MENU</p>
+
+    <button class="nav-btn active" data-page="dashboard">🏡 Dashboard</button>
+    <button class="nav-btn" data-page="generator">✨ Generate My Plan</button>
+    <button class="nav-btn" data-page="workouts">🏋️ Workouts</button>
+    <button class="nav-btn" data-page="nutrition">🥗 Nutrition Plan</button>
+    <button class="nav-btn" data-page="chat">💬 FitBuddy AI Chat</button>
+
+    <div class="sidebar-bottom">
+      <strong>🌱 Small steps matter!</strong>
+      Every healthy choice is progress. Keep showing up for yourself.
+    </div>
+
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <button class="menu-toggle" id="menuToggle">☰</button>
+        <div>
+          <h2 id="pageTitle">Your Dashboard</h2>
+          <p id="pageSubtitle">A little progress every day adds up 🌱</p>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <div class="date-pill" id="todayDate"></div>
+      </div>
+    </header>
+
+    <!-- DASHBOARD -->
+    <section class="page active" id="dashboard">
+
+      <div class="hero">
+        <div>
+          <div class="eyebrow">YOUR PERSONAL FITNESS COMPANION</div>
+          <h1>A healthier you, one day at a time 🌿</h1>
+          <p>
+            Your goals, your pace, your journey.
+            Let's build a fitness routine that fits your life.
+          </p>
+          <button class="primary-btn" onclick="showPage('generator')">
+            ✨ Generate My Fitness Plan
+          </button>
+        </div>
+        <div class="hero-art">🌱</div>
+      </div>
+
+      <div class="metrics">
+
+        <div class="card">
+          <div class="metric-icon" style="background:#e3eee2;">🏃</div>
+          <div class="metric-label">Workout Progress</div>
+          <div class="metric-value" id="workoutMetric">0/7</div>
+          <div class="subtext">Days completed</div>
+          <div class="progress-track">
+            <div class="progress-fill" id="workoutProgress" style="width:0%"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="metric-icon" style="background:#e2eff5;">💧</div>
+          <div class="metric-label">Water Intake</div>
+          <div class="metric-value" id="waterMetric">0 ml</div>
+          <div class="subtext">Daily hydration</div>
+          <div class="progress-track">
+            <div class="progress-fill" id="waterProgress" style="width:0%;background:#80b9c8;"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="metric-icon" style="background:#f8e8d8;">🔥</div>
+          <div class="metric-label">Active Minutes</div>
+          <div class="metric-value" id="minutesMetric">0</div>
+          <div class="subtext">Minutes today</div>
+        </div>
+
+        <div class="card">
+          <div class="metric-icon" style="background:#eee8f6;">🌟</div>
+          <div class="metric-label">Current Streak</div>
+          <div class="metric-value" id="streakMetric">0 days</div>
+          <div class="subtext">Keep building habits!</div>
+        </div>
+
+      </div>
+
+      <div class="section-heading">
+        <h3>Your 7-Day Fitness Journey</h3>
+        <button class="small-link" onclick="showPage('workouts')">View calendar →</button>
+      </div>
+
+      <div class="card">
+        <p class="subtext">Your weekly workout schedule at a glance.</p>
+        <div class="week-grid" id="dashboardWeek"></div>
+      </div>
+
+      <div class="content-grid" style="margin-top:20px;">
+
+        <div class="card">
+          <h3>🏋️ Today's Workout</h3>
+          <p class="subtext">Your movement plan for today</p>
+          <div id="todayWorkout" class="workout-list"></div>
+          <button class="secondary-btn" style="margin-top:15px;" onclick="showPage('workouts')">
+            View full plan →
+          </button>
+        </div>
+
+        <div class="card">
+          <h3>🥗 Today's Nutrition</h3>
+          <p class="subtext">Simple, balanced meal ideas</p>
+          <div id="todayMeals"></div>
+          <div class="ai-tip">
+            🌿 <strong>FitBuddy's reminder</strong><br>
+            Rest, hydration, and balanced meals are part of your fitness journey too.
+          </div>
+        </div>
+
+      </div>
+
+      <div class="card water-card">
+        <div class="water-circle">💧</div>
+        <div>
+          <h3>Stay Hydrated!</h3>
+          <p class="subtext">Water goal: 2500 ml. Adjust your intake as needed.</p>
+          <div class="metric-value" id="waterDisplay">0 / 2500 ml</div>
+          <div class="water-controls">
+            <button onclick="changeWater(250)">+250 ml</button>
+            <button onclick="changeWater(500)">+500 ml</button>
+            <button onclick="changeWater(-250)">−250 ml</button>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- GENERATOR -->
+    <section class="page" id="generator">
+
+      <div class="card">
+        <h3>✨ Generate Your Personalized Fitness Plan</h3>
+        <p class="subtext">
+          Tell FitBuddy a little about yourself to create a fitness plan
+          tailored to your goals and preferences.
         </p>
 
-        <form action="/generate-workout" method="post">
+        <form id="planForm">
 
-            <label>Full Name</label>
+          <div class="form-grid">
 
-            <input
-                type="text"
-                name="username"
-                placeholder="Enter your name"
-                required
-            >
+            <div class="form-group">
+              <label for="userName">Your name</label>
+              <input id="userName" type="text" placeholder="Enter your name">
+            </div>
 
-            <label>User ID</label>
+            <div class="form-group">
+              <label for="goal">Fitness goal</label>
+              <select id="goal">
+                <option value="General fitness">General fitness</option>
+                <option value="Build strength">Build strength</option>
+                <option value="Improve flexibility">Improve flexibility</option>
+                <option value="Improve endurance">Improve endurance</option>
+                <option value="Build a consistent routine">Build a consistent routine</option>
+              </select>
+            </div>
 
-            <input
-                type="text"
-                name="user_id"
-                placeholder="Enter user ID"
-                required
-            >
+            <div class="form-group">
+              <label for="level">Fitness level</label>
+              <select id="level">
+                <option>Beginner</option>
+                <option>Intermediate</option>
+                <option>Advanced</option>
+              </select>
+            </div>
 
-            <label>Age</label>
+            <div class="form-group">
+              <label for="days">Workout days per week</label>
+              <select id="days">
+                <option value="3">3 days</option>
+                <option value="4">4 days</option>
+                <option value="5">5 days</option>
+                <option value="6">6 days</option>
+                <option value="7">7 days (with recovery)</option>
+              </select>
+            </div>
 
-            <input
-                type="number"
-                name="age"
-                min="13"
-                max="100"
-                required
-            >
+            <div class="form-group">
+              <label for="duration">Preferred workout duration</label>
+              <select id="duration">
+                <option value="15">15 minutes</option>
+                <option value="20">20 minutes</option>
+                <option value="30" selected>30 minutes</option>
+                <option value="45">45 minutes</option>
+              </select>
+            </div>
 
-            <label>Weight (kg)</label>
+            <div class="form-group">
+              <label for="place">Workout location</label>
+              <select id="place">
+                <option>At home</option>
+                <option>Gym</option>
+                <option>Outdoor</option>
+              </select>
+            </div>
 
-            <input
-                type="number"
-                name="weight"
-                step="0.1"
-                required
-            >
+            <div class="form-group full">
+              <label for="preferences">Preferences or limitations</label>
+              <textarea id="preferences" rows="3"
+                placeholder="e.g. I enjoy walking, prefer low-impact exercises..."></textarea>
+            </div>
 
-            <label>Fitness Goal</label>
+          </div>
 
-            <select name="goal" required>
-
-                <option value="">
-                    Select Goal
-                </option>
-
-                <option value="Weight Loss">
-                    Weight Loss
-                </option>
-
-                <option value="Muscle Gain">
-                    Muscle Gain
-                </option>
-
-                <option value="General Wellness">
-                    General Wellness
-                </option>
-
-                <option value="Flexibility">
-                    Flexibility
-                </option>
-
-            </select>
-
-            <label>Workout Intensity</label>
-
-            <select name="intensity" required>
-
-                <option value="">
-                    Select Intensity
-                </option>
-
-                <option value="Low">
-                    Low
-                </option>
-
-                <option value="Medium">
-                    Medium
-                </option>
-
-                <option value="High">
-                    High
-                </option>
-
-            </select>
-
-            <button type="submit">
-                Generate Fitness Plan
-            </button>
+          <button class="primary-btn" type="submit">
+            ✨ Generate My Fitness Plan
+          </button>
 
         </form>
 
+        <div id="generatedPlan" style="margin-top:25px;"></div>
+
+      </div>
+
+    </section>
+
+    <!-- WORKOUTS -->
+    <section class="page" id="workouts">
+
+      <div class="card">
+        <h3>🏋️ Your 7-Day Workout Calendar</h3>
+        <p class="subtext">Select a day to explore your workout and recovery plan.</p>
+
+        <div class="week-grid" id="workoutWeek"></div>
+
+        <div class="day-detail" id="dayDetail"></div>
+      </div>
+
+      <div class="card" style="margin-top:20px;">
+        <h3>🌱 Weekly Progress</h3>
+        <p class="subtext">Celebrate every completed workout. Rest days count too.</p>
+        <div class="progress-track" style="height:12px;">
+          <div class="progress-fill" id="weeklyProgress" style="width:0%"></div>
+        </div>
+        <p id="weeklyProgressText" class="subtext" style="margin-top:10px;">0 of 7 days completed</p>
+      </div>
+
+    </section>
+
+    <!-- NUTRITION -->
+    <section class="page" id="nutrition">
+
+      <div class="hero" style="margin-bottom:20px;">
+        <div>
+          <div class="eyebrow">NOURISH YOUR BODY</div>
+          <h1>Balanced meals, happier days 🥗</h1>
+          <p>
+            Discover simple meal ideas to support your daily
+            energy and overall wellbeing.
+          </p>
+        </div>
+        <div class="hero-art">🍓</div>
+      </div>
+
+      <div class="card">
+        <h3>🍽️ Your Daily Meal Ideas</h3>
+        <p class="subtext">Flexible suggestions, not strict dietary rules.</p>
+        <div id="nutritionMeals" style="margin-top:15px;"></div>
+      </div>
+
+      <div class="ai-tip" style="margin-top:20px;">
+        💚 These are general meal suggestions, not medical nutrition advice.
+        Your needs may vary depending on your health, preferences, and activity.
+      </div>
+
+    </section>
+
+    <!-- CHAT -->
+    <section class="page" id="chat">
+
+      <div class="card">
+        <h3>💬 Chat with FitBuddy AI</h3>
+        <p class="subtext">Your friendly fitness companion.</p>
+
+        <div class="chat-box">
+
+          <div class="chat-messages" id="chatMessages">
+            <div class="message bot">
+              Hey there! 🌿 I'm FitBuddy.
+
+              I can help you explore workout ideas, build healthy habits,
+              and stay motivated.
+
+              What would you like help with today?
+            </div>
+          </div>
+
+          <form class="chat-input" id="chatForm">
+            <input id="chatInput" type="text"
+              placeholder="Ask FitBuddy something..." autocomplete="off">
+            <button class="primary-btn" type="submit">Send ➤</button>
+          </form>
+
+        </div>
+      </div>
+
+      <p class="subtext" style="margin-top:12px;">
+        Demo mode: responses are simulated locally. No real AI service is connected.
+      </p>
+
+    </section>
+
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------------------------------
+   FITBUDDY AI - DEMO JAVASCRIPT
+---------------------------------- */
+
+const dayNames = [
+  "Monday", "Tuesday", "Wednesday", "Thursday",
+  "Friday", "Saturday", "Sunday"
+];
+
+const shortDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+const defaultPlan = [
+  {
+    title: "Full Body Movement",
+    icon: "🏃",
+    duration: 20,
+    exercises: ["Gentle warm-up", "Bodyweight squats", "Wall push-ups", "Easy stretching"],
+    recovery: "Finish with gentle stretching and water."
+  },
+  {
+    title: "Walking & Mobility",
+    icon: "🚶",
+    duration: 20,
+    exercises: ["Comfortable-paced walk", "Shoulder circles", "Hip mobility", "Gentle stretching"],
+    recovery: "Take breaks whenever needed."
+  },
+  {
+    title: "Strength Basics",
+    icon: "💪",
+    duration: 20,
+    exercises: ["Gentle warm-up", "Chair squats", "Wall push-ups", "Standing calf raises"],
+    recovery: "Allow your muscles time to recover."
+  },
+  {
+    title: "Active Recovery",
+    icon: "🌿",
+    duration: 15,
+    exercises: ["Easy walk", "Gentle stretching", "Relaxed breathing"],
+    recovery: "Keep movement comfortable and gentle."
+  },
+  {
+    title: "Cardio & Energy",
+    icon: "💃",
+    duration: 20,
+    exercises: ["Warm-up", "Easy dance or march", "Step touches", "Cool-down"],
+    recovery: "Slow down if you feel tired."
+  },
+  {
+    title: "Flexibility Flow",
+    icon: "🧘",
+    duration: 15,
+    exercises: ["Neck and shoulder mobility", "Gentle side stretches", "Hamstring stretch"],
+    recovery: "Never force a stretch."
+  },
+  {
+    title: "Rest & Recharge",
+    icon: "🌸",
+    duration: 0,
+    exercises: ["Rest", "Optional gentle movement", "Reflect on your week"],
+    recovery: "Rest is an important part of fitness."
+  }
+];
+
+const meals = [
+  { time: "Breakfast", icon: "🥣", name: "Oats, fruit & milk", desc: "A simple, nourishing start" },
+  { time: "Lunch", icon: "🍚", name: "Rice, dal & vegetables", desc: "A balanced, satisfying meal" },
+  { time: "Snack", icon: "🍎", name: "Fruit or nuts", desc: "An easy snack option" },
+  { time: "Dinner", icon: "🥗", name: "Chapati, vegetables & protein", desc: "A flexible dinner idea" }
+];
+
+let currentPlan = structuredClone(defaultPlan);
+let selectedDay = 0;
+let completedDays = [];
+let waterIntake = 0;
+let activeMinutes = 0;
+let streak = 0;
+
+const waterGoal = 2500;
+
+/* DATE */
+
+const today = new Date();
+
+document.getElementById("todayDate").textContent =
+  today.toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "short",
+    year: "numeric"
+  });
+
+/* NAVIGATION */
+
+const pageInfo = {
+  dashboard: ["Your Dashboard", "A little progress every day adds up 🌱"],
+  generator: ["Create Your Fitness Plan", "Your goals. Your routine. Your pace."],
+  workouts: ["Your Workouts", "Move, recover, and celebrate progress."],
+  nutrition: ["Nutrition Plan", "Simple ideas to nourish your day."],
+  chat: ["FitBuddy AI Chat", "Your friendly fitness companion."]
+};
+
+function showPage(pageId) {
+  document.querySelectorAll(".page").forEach(page => {
+    page.classList.remove("active");
+  });
+
+  document.getElementById(pageId).classList.add("active");
+
+  document.querySelectorAll(".nav-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.page === pageId);
+  });
+
+  document.getElementById("pageTitle").textContent = pageInfo[pageId][0];
+  document.getElementById("pageSubtitle").textContent = pageInfo[pageId][1];
+
+  document.getElementById("sidebar").classList.remove("open");
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+document.querySelectorAll(".nav-btn").forEach(btn => {
+  btn.addEventListener("click", () => showPage(btn.dataset.page));
+});
+
+document.getElementById("menuToggle").addEventListener("click", () => {
+  document.getElementById("sidebar").classList.toggle("open");
+});
+
+/* TOAST */
+
+function notify(message) {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.classList.add("show");
+
+  setTimeout(() => toast.classList.remove("show"), 2500);
+}
+
+/* WEEK CALENDAR */
+
+function renderWeek(containerId, interactive = false) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = "";
+
+  currentPlan.forEach((day, index) => {
+    const isSelected = selectedDay === index;
+    const isComplete = completedDays.includes(index);
+
+    const card = document.createElement("button");
+    card.className = "day-card" + (interactive && isSelected ? " selected" : "");
+
+    card.innerHTML = `
+      <div class="day-name">${shortDays[index]}</div>
+      <div class="day-number">${index + 1}</div>
+      <div class="day-icon">${isComplete ? "✅" : day.icon}</div>
+      <div class="day-status">${isComplete ? "Done" : day.duration === 0 ? "Rest" : day.duration + " min"}</div>
+    `;
+
+    card.addEventListener("click", () => {
+      selectedDay = index;
+      renderAll();
+    });
+
+    container.appendChild(card);
+  });
+}
+
+/* WORKOUT RENDERING */
+
+function renderWorkoutList(containerId, dayIndex) {
+  const container = document.getElementById(containerId);
+  const day = currentPlan[dayIndex];
+
+  container.innerHTML = "";
+
+  day.exercises.slice(0, 4).forEach((exercise, index) => {
+    const item = document.createElement("div");
+    item.className = "workout-item";
+
+    item.innerHTML = `
+      <div class="workout-emoji">${["🌿", "💪", "🏃", "🧘"][index]}</div>
+      <div class="workout-info">
+        <h4>${exercise}</h4>
+        <p>${day.duration ? Math.max(3, Math.round(day.duration / day.exercises.length)) + " min" : "Recovery"}</p>
+      </div>
+    `;
+
+    container.appendChild(item);
+  });
+}
+
+function renderDayDetail() {
+  const day = currentPlan[selectedDay];
+  const detail = document.getElementById("dayDetail");
+
+  detail.innerHTML = `
+    <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+      <div>
+        <p class="subtext">DAY ${selectedDay + 1} · ${dayNames[selectedDay].toUpperCase()}</p>
+        <h3 style="margin-top:8px;">${day.icon} ${day.title}</h3>
+        <p class="subtext">${day.duration ? day.duration + " minutes" : "Rest day"}</p>
+      </div>
+      <button class="secondary-btn" onclick="toggleComplete(${selectedDay})">
+        ${completedDays.includes(selectedDay) ? "✓ Completed" : "Mark as completed"}
+      </button>
     </div>
 
-</body>
+    <div class="workout-list">
+      ${day.exercises.map((exercise, index) => `
+        <div class="workout-item">
+          <div class="workout-emoji">${["🌱", "🏃", "💪", "🧘"][index % 4]}</div>
+          <div class="workout-info">
+            <h4>${exercise}</h4>
+            <p>${day.duration ? "Move at a comfortable pace" : "Take time to recharge"}</p>
+          </div>
+        </div>
+      `).join("")}
+    </div>
 
+    <div class="ai-tip">
+      🌿 <strong>Recovery tip</strong><br>
+      ${day.recovery}
+    </div>
+  `;
+}
+
+function toggleComplete(index) {
+  if (completedDays.includes(index)) {
+    completedDays = completedDays.filter(day => day !== index);
+    notify("Workout marked as incomplete.");
+  } else {
+    completedDays.push(index);
+    notify("Day completed! Keep it up 🌿");
+  }
+
+  renderAll();
+}
+
+/* MEALS */
+
+function renderMeals(containerId) {
+  const container = document.getElementById(containerId);
+
+  container.innerHTML = meals.map(meal => `
+    <div class="meal-item">
+      <div class="meal-emoji">${meal.icon}</div>
+      <div class="meal-info">
+        <p style="color:#8a9b84;font-size:10px;margin-bottom:4px;">${meal.time}</p>
+        <h4>${meal.name}</h4>
+        <p>${meal.desc}</p>
+      </div>
+    </div>
+  `).join("");
+}
+
+/* WATER TRACKER */
+
+function changeWater(amount) {
+  waterIntake = Math.max(0, waterIntake + amount);
+  waterIntake = Math.min(waterIntake, 10000);
+
+  renderAll();
+
+  if (waterIntake >= waterGoal) {
+    notify("Daily water goal reached! 💧");
+  }
+}
+
+/* METRICS */
+
+function renderMetrics() {
+  document.getElementById("workoutMetric").textContent =
+    completedDays.length + "/7";
+
+  document.getElementById("workoutProgress").style.width =
+    (completedDays.length / 7 * 100) + "%";
+
+  document.getElementById("waterMetric").textContent =
+    waterIntake.toLocaleString() + " ml";
+
+  document.getElementById("waterDisplay").textContent =
+    waterIntake.toLocaleString() + " / " + waterGoal.toLocaleString() + " ml";
+
+  document.getElementById("waterProgress").style.width =
+    Math.min(waterIntake / waterGoal * 100, 100) + "%";
+
+  document.getElementById("minutesMetric").textContent = activeMinutes;
+
+  document.getElementById("streakMetric").textContent =
+    streak + (streak === 1 ? " day" : " days");
+
+  document.getElementById("weeklyProgress").style.width =
+    (completedDays.length / 7 * 100) + "%";
+
+  document.getElementById("weeklyProgressText").textContent =
+    completedDays.length + " of 7 days completed";
+}
+
+/* PLAN GENERATOR - DEMO */
+
+document.getElementById("planForm").addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  const name = document.getElementById("userName").value.trim();
+  const goal = document.getElementById("goal").value;
+  const level = document.getElementById("level").value;
+  const days = Number(document.getElementById("days").value);
+  const duration = Number(document.getElementById("duration").value);
+  const place = document.getElementById("place").value;
+  const preferences = document.getElementById("preferences").value.trim();
+
+  if (name) {
+    document.getElementById("profileName").textContent = name;
+  }
+
+  const workoutTemplates = [
+    ["Full Body Movement", "🏃", ["Warm-up", "Chair squats", "Wall push-ups", "Gentle stretching"]],
+    ["Walking & Mobility", "🚶", ["Comfortable walk", "Shoulder circles", "Hip mobility", "Stretching"]],
+    ["Strength Basics", "💪", ["Warm-up", "Bodyweight squats", "Wall push-ups", "Calf raises"]],
+    ["Active Recovery", "🌿", ["Easy walk", "Gentle stretching", "Relaxed breathing"]],
+    ["Cardio & Energy", "💃", ["Warm-up", "Easy marching", "Step touches", "Cool-down"]],
+    ["Flexibility Flow", "🧘", ["Shoulder mobility", "Side stretches", "Gentle yoga"]],
+    ["Rest & Recharge", "🌸", ["Rest", "Optional gentle movement", "Reflect on your week"]]
+  ];
+
+  let workoutDays = 0;
+
+  currentPlan = workoutTemplates.map((template, index) => {
+    const isRest = index === 6 || workoutDays >= days;
+
+    if (!isRest) workoutDays++;
+
+    return {
+      title: isRest ? "Rest & Recovery" : template[0],
+      icon: isRest ? "🌸" : template[1],
+      duration: isRest ? 0 : duration,
+      exercises: isRest
+        ? ["Rest and recharge", "Optional gentle movement", "Reflect on your progress"]
+        : template[2],
+      recovery: "Stay hydrated, listen to your body, and take breaks when needed."
+    };
+  });
+
+  completedDays = [];
+  activeMinutes = 0;
+  selectedDay = 0;
+
+  renderAll();
+
+  const result = document.getElementById("generatedPlan");
+
+  result.innerHTML = `
+    <div class="ai-tip">
+      <h3>🌿 Your personalized demo plan is ready${name ? ", " + escapeHTML(name) : ""}!</h3>
+      <p style="margin-top:8px;">
+        Goal: ${escapeHTML(goal)}<br>
+        Fitness level: ${escapeHTML(level)}<br>
+        Workout location: ${escapeHTML(place)}<br>
+        Preferred duration: ${duration} minutes<br>
+        Weekly workout days: ${days}
+      </p>
+      ${preferences ? `<p style="margin-top:8px;">Preferences: ${escapeHTML(preferences)}</p>` : ""}
+      <p style="margin-top:10px;">
+        This is a sample plan generated in your browser.
+        It does not use Gemini AI yet.
+      </p>
+    </div>
+
+    <h3 style="margin:22px 0 12px;">Your 7-Day Plan</h3>
+    <div id="generatedWeek" class="week-grid"></div>
+
+    <button class="primary-btn" style="margin-top:12px;" onclick="showPage('workouts')">
+      View My Workout Calendar →
+    </button>
+  `;
+
+  renderWeek("generatedWeek", true);
+
+  notify("Your demo fitness plan is ready!");
+});
+
+/* CHAT SIMULATION */
+
+document.getElementById("chatForm").addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  const input = document.getElementById("chatInput");
+  const message = input.value.trim();
+
+  if (!message) return;
+
+  addMessage(message, "user");
+  input.value = "";
+
+  setTimeout(() => {
+    addMessage(getBotResponse(message), "bot");
+  }, 500);
+});
+
+function addMessage(text, type) {
+  const messages = document.getElementById("chatMessages");
+  const div = document.createElement("div");
+
+  div.className = "message " + type;
+  div.textContent = text;
+
+  messages.appendChild(div);
+  messages.scrollTop = messages.scrollHeight;
+}
+
+function getBotResponse(message) {
+  const text = message.toLowerCase();
+
+  if (text.includes("workout") || text.includes("exercise")) {
+    return "🌿 Start with movements that feel comfortable. Your FitBuddy workout calendar has a sample 7-day plan. Remember to warm up, take breaks, and rest when needed.";
+  }
+
+  if (text.includes("food") || text.includes("nutrition") || text.includes("meal")) {
+    return "🥗 Try to enjoy a variety of foods, including carbohydrates, protein, fruits, and vegetables. Your nutrition section has flexible meal ideas to explore.";
+  }
+
+  if (text.includes("water") || text.includes("hydration")) {
+    return "💧 Staying hydrated throughout the day is helpful. Your needs vary with weather and activity. You can track your water intake on the dashboard.";
+  }
+
+  if (text.includes("tired") || text.includes("rest")) {
+    return "🌸 Rest is productive too! If you're tired, consider taking a break or choosing gentle movement. You don't need to push through discomfort to make progress.";
+  }
+
+  if (text.includes("hello") || text.includes("hi")) {
+    return "Hey there! 🌿 Ready to make today a little healthier? You can ask me about workouts, nutrition, or building healthy habits.";
+  }
+
+  return "🌱 Thanks for sharing! Small, consistent habits can make fitness feel more manageable. Explore your dashboard and workout calendar for ideas. This is a demo response, not a live AI-generated answer.";
+}
+
+/* HTML ESCAPE */
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, character => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  })[character]);
+}
+
+/* RENDER ALL */
+
+function renderAll() {
+  renderWeek("dashboardWeek");
+  renderWeek("workoutWeek", true);
+  renderDayDetail();
+
+  renderWorkoutList("todayWorkout", selectedDay);
+  renderMeals("todayMeals");
+  renderMeals("nutritionMeals");
+
+  renderMetrics();
+}
+
+/* INITIALIZE */
+
+renderAll();
+
+</script>
+
+</body>
 </html>

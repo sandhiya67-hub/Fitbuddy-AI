@@ -1,4 +1,4 @@
----
+what ---
 title: FitBuddy AI
 emoji: ":muscle:"
 colorFrom: green
