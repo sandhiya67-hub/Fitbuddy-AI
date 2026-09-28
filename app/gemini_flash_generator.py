@@ -1,0 +1,4 @@
+from .gemini_client import tip
+def generate_nutrition_tip_with_flash(goal: str) -> str:
+    defaults={"weight loss":"Build meals around vegetables, fibre-rich carbohydrates, and a protein source; regular meals and hydration support steady energy.","muscle gain":"Include a protein source after training and pair it with carbohydrates to support recovery and energy needs.","general wellness":"Aim for colourful foods, regular hydration, and consistent sleep alongside your training.","flexibility":"Hydrate through the day and allow recovery time; gentle movement and sleep support a mobility routine."}
+    return tip(f"Give one concise, practical, non-medical nutrition or recovery tip for {goal} in two sentences or fewer.",lambda:"LOCAL DEVELOPMENT TIP: "+defaults.get(goal,defaults["general wellness"]))
